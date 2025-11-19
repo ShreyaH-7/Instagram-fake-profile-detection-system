@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sections">
+            <h1>Result</h1>
+            <h3 class="result-text"><strong>Prediction:</strong> {{ prediction }}</h3>
+            <h2>Instagram Profile Data</h2>
+            <ul>
+                <li><strong>Username:</strong> {{ data['Username'] }}</li>
+                <li><strong>Full Name:</strong> {{ data['Full Name'] }}</li>
+                <li><strong>Biography:</strong> {{ data['Biography'] }}</li>
+                <li><strong>Followers Count:</strong> {{ data['Followers Count'] }}</li>
+                <li><strong>Following Count:</strong> {{ data['Following Count'] }}</li>
+                <li><strong>Has Profile Picture:</strong> {{ data['Has Profile Picture'] }}</li>
+                <!-- <li><strong>Numerical Chars in Username:</strong> {{ data['Numerical Chars in Username'] }}</li> -->
+                <li><strong>Username Length:</strong> {{ data['Username Length'] }}</li>
+                <li><strong>Ratio Numerical Chars in Username:</strong> {{ data['Ratio Numerical Chars in Username'] }}</li>
+                <li><strong>Full Name Tokens:</strong> {{ data['Full Name Tokens'] }}</li>
+                <li><strong>Numerical Chars in Full Name:</strong> {{ data['Numerical Chars in Full Name'] }}</li>
+                <li><strong>Full Name Length:</strong> {{ data['Full Name Length'] }}</li>
+                <!-- <li><strong>Ratio Numerical Chars in Full Name:</strong> {{ data['Ratio Numerical Chars in Full Name'] }}</li> -->
+                <li><strong>Same Username and Full Name:</strong> {{ data['Same Username and Full Name'] }}</li>
+                <li><strong>Description Length:</strong> {{ data['Description Length'] }}</li>
+                <li><strong>External URL:</strong> {{ data['External URL'] }}</li>
+                <li><strong>Private:</strong> {{ data['Private'] }}</li>
+                <li><strong>Number of Posts:</strong> {{ data['Number of Posts'] }}</li>
+            </ul>
+            <form id="flag-form" method="POST" action="{{ url_for('flag_instagram_account', username=data['Username']) }}">
+                <!-- {{message}} -->
+                <div class="g-recaptcha" data-sitekey="6LeS9oUoAAAAAE3h8nM5RXe5X-wlgdt41DRIUpaE"></div>
+                <br/>          
+                <button class="flag-button" type="submit" value="Submit" onclick="return checkRecaptcha()">Flag Account</button>
+            </form>            
+        </div>
+        <script>
+            function checkRecaptcha() {
+                var recaptchaResponse = grecaptcha.getResponse();
+                
+                // Check if reCAPTCHA has been successfully completed
+                if (recaptchaResponse.length === 0) {
+                    // If reCAPTCHA is not completed, show an error message or alert
+                    alert('Please complete the reCAPTCHA before submitting the form.');
+                    return false; // Prevent the form from being submitted
+                }
+                
+                // If reCAPTCHA is completed, allow the form to be submitted
+                return true;
+            }
+        </script>
+        </div>
+</body>
+</html>
